@@ -1,4 +1,15 @@
-export const mockProducts = [
+export interface Product {
+  _id: string;
+  title: string;
+  quantity: number;
+  price: number;
+}
+
+interface Cart extends Product {
+  productId: string,
+}
+
+export const mockProducts: Product[] = [
   {
     _id: "1",
     title: "Amazon Kindle E-reader",
@@ -25,7 +36,7 @@ export const mockProducts = [
   },
 ];
 
-export const mockCart = [
+export const mockCart: Cart[] = [
   {
     _id: "a1",
     productId: "1",
