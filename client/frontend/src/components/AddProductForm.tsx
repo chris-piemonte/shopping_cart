@@ -1,20 +1,6 @@
 import { useState } from "react";
-import type { AddProductFormProps } from "../types"
+import type { AddProductFormProps, NewProductProps } from "../types"
 import { addProduct } from "../services";
-
-interface EditableFormFields {
-  target: {
-    name: string;
-    value: string | number;
-  };
-  preventDefault: () => void;
-}
-
-export interface NewProduct {
-  title: string;
-  quantity: string;
-  price: string;
-}
 
 const AddProductForm = ({handleClick, allProducts, setAllProducts}: AddProductFormProps) => {
   const [formFields, setFormFields] = useState(
@@ -25,14 +11,14 @@ const AddProductForm = ({handleClick, allProducts, setAllProducts}: AddProductFo
     }
   )
 
-  const handleChange = (e: EditableFormFields) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormFields(prev => ({...prev, [name]: value}));
   }
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const newProduct: NewProduct = {
+    const newProduct: NewProductProps = {
       "title": formFields["product-name"],
       "price": formFields["product-price"],
       "quantity": formFields["product-quantity"],
