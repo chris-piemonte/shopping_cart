@@ -57,7 +57,7 @@ const EditableProduct = ({ product, allProducts, setAllProducts, cart, setCart }
         <p className="price">${ product.price }</p>
         <p className="quantity">{ product.quantity } left in stock</p>
         <div className="actions product-actions">
-          <button className="add-to-cart" onClick={handleAddToCart} disabled={editProduct}>Add to Cart</button>
+          <button className="add-to-cart" onClick={handleAddToCart} disabled={editProduct || product.quantity === 0}>Add to Cart</button>
           <button className="edit" onClick={handleToggleEditForm} disabled={editProduct}>Edit</button>
         </div>
         <button className="delete-button" onClick={handleDeleteProduct}><span>X</span></button>
