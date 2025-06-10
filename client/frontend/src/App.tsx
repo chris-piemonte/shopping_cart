@@ -23,6 +23,22 @@ function productsReducer(allProducts: Product[], action: ProductsActions) {
           return product;
         }
       });
+    case 'SORT_PRODUCTS': {
+      let sortedProducts: Product[];
+      if (action.category === 'title') {
+        sortedProducts = [...allProducts].sort((a, b) => a.title.localeCompare(b.title));
+      } else if (action.category === 'price') {
+        sortedProducts = [...allProducts].sort((a, b) => a.price - b.price);
+      } else if (action.category === 'quantity') {
+        sortedProducts = [...allProducts].sort((a, b) => a.quantity - b.quantity);
+      } else {
+        throw Error('Unknown product action: ' + action.category);
+      }
+
+      if (action.ascending === false) sortedProducts.reverse();
+      console.log(sortedProducts);
+      return sortedProducts;
+    }
     default:
       throw Error('Unknown product action: ' + (action as any).type);
   }

@@ -31,7 +31,13 @@ interface ReduceProductQuantity {
   productId: string;
 }
 
-export type ProductsActions = SetInitialProducts | AddProduct | DeleteProduct | UpdateProduct | ReduceProductQuantity;
+interface SortProducts {
+  type: 'SORT_PRODUCTS';
+  category: 'title' | 'price' | 'quantity';
+  ascending: boolean;
+}
+
+export type ProductsActions = SetInitialProducts | AddProduct | DeleteProduct | UpdateProduct | ReduceProductQuantity | SortProducts;
 
 export interface NewProductProps {
   title: string;
