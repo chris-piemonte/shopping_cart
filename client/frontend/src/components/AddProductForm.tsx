@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { AddProductFormProps, NewProductProps } from "../types"
 import { addProduct } from "../services";
 
-const AddProductForm = ({handleClick, allProducts, setAllProducts}: AddProductFormProps) => {
+const AddProductForm = ({handleClick, dispatchProducts}: AddProductFormProps) => {
   const [formFields, setFormFields] = useState(
     {
       "product-name": '',
@@ -25,7 +25,10 @@ const AddProductForm = ({handleClick, allProducts, setAllProducts}: AddProductFo
     }
 
     const res = await addProduct(newProduct);
-    setAllProducts(allProducts.concat(res));
+    dispatchProducts({
+      type: 'ADD_PRODUCT',
+      res: res,
+    });
   }
 
   return (

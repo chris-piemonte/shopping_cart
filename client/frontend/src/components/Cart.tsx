@@ -1,10 +1,10 @@
 import { checkout } from "../services";
 import type { CartProps } from "../types";
 
-const Cart = ({cart, setCart}: CartProps) => {
+const Cart = ({cart, dispatchCart}: CartProps) => {
   const handleCheckout = () => {
     checkout();
-    setCart([]);
+    dispatchCart({type: 'CHECKOUT'});
   }
 
   return (

@@ -1,17 +1,9 @@
 import { useState } from 'react'
-import type { Product, CartItem, CartResponse } from "../types";
+import type { EditableProductProps, CartResponse } from "../types";
 import EditProductForm from './EditProductForm';
-import { deleteProduct, addToCart } from '../services';
+import { addToCart } from '../services';
 
-interface EditableProductProps {
-  product: Product;
-  allProducts: Product[];
-  cart: CartItem[];
-  setAllProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>
-}
-
-const EditableProduct = ({ product, allProducts, setAllProducts, cart, setCart }: EditableProductProps) => {
+const EditableProduct = ({ product, allProducts, dispatchProducts, dispatchCart }: EditableProductProps) => {
   const [editProduct, setEditProduct] = useState(false);
 
   const handleToggleEditForm = () => {
@@ -19,30 +11,27 @@ const EditableProduct = ({ product, allProducts, setAllProducts, cart, setCart }
   }
 
   const handleDeleteProduct = () => {
-    const deletedProduct = product._id;
-    deleteProduct(deletedProduct);
-    setAllProducts(allProducts.filter(product => product._id !== deletedProduct));
+    const deletedProductId = product._id;
+    dispatchProducts({
+      type: 'DELETE_PRODUCT',
+      deletedProductId: deletedProductId,
+    });
   }
 
   const updateCart = (res: CartResponse) => {
-    if(cart.find(cartItem => cartItem.productId === res.item.productId)) {
-      setCart(cart.map(cartItem => {
-        return cartItem.productId === product._id ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem;
-      }));
-    } else {
-      setCart(cart.concat(res.item));
-    }
+    dispatchCart({
+      type: 'ADD_TO_CART',
+      productId: res.item.productId,
+      product: res.item,
+    });
   }
 
   const updateProducts = (res: CartResponse) => {
-    setAllProducts(allProducts.map(product => {
-      if (product._id === res.item.productId) {
-        return {...product, quantity: product.quantity - 1}
-      } else {
-        return product;
-      }
-    }));
-  }
+    dispatchProducts({
+      type: 'REDUCE_PRODUCT_QUANTITY',
+      productId: res.item.productId
+    });
+  };
 
   const handleAddToCart = async () => {
     const res = await addToCart(product._id);
@@ -62,7 +51,7 @@ const EditableProduct = ({ product, allProducts, setAllProducts, cart, setCart }
         </div>
         <button className="delete-button" onClick={handleDeleteProduct}><span>X</span></button>
       </div>
-      {editProduct ? (<EditProductForm allProducts={allProducts} setAllProducts={setAllProducts} product={product} handleToggleEditForm={handleToggleEditForm} />) : null}
+      {editProduct ? (<EditProductForm dispatchProducts={dispatchProducts} product={product} handleToggleEditForm={handleToggleEditForm} />) : null}
     </li>
   )
 }

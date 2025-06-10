@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { updateProduct } from "../services";
-import type { Product } from "../types";
+import type { EditProductFormProps } from "../types";
 import type { EditProductProps } from "../types";
-
-interface EditableProductProps {
-  allProducts: Product[];
-  product: Product;
-  handleToggleEditForm: () => void;
-  setAllProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-}
 
 interface EditFormFields {
   target: {
@@ -17,7 +10,7 @@ interface EditFormFields {
   };
 }
 
-const EditProductForm = ({ allProducts, product, setAllProducts, handleToggleEditForm }: EditableProductProps) => {
+const EditProductForm = ({ product, dispatchProducts, handleToggleEditForm }: EditProductFormProps) => {
   const [formData, setFormData] = useState({
     title: product.title,
     price: product.price,
@@ -40,7 +33,11 @@ const EditProductForm = ({ allProducts, product, setAllProducts, handleToggleEdi
 
     const res = await updateProduct(product._id, updatedProduct);
     handleToggleEditForm();
-    setAllProducts(allProducts.map(item => item._id === product._id ? res : item)); 
+    dispatchProducts({
+      type: 'UPDATE_PRODUCT',
+      res: res,
+      productId: product._id,
+    })
   }
 
   return (

@@ -1,13 +1,8 @@
 import { useState } from "react";
 import AddProductForm from "./AddProductForm";
-import type { Product } from "../types";
+import type { AddProductProps } from "../types";
 
-interface ProductsProps {
-  allProducts: Product[];
-  setAllProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-}
-
-const AddProduct = ({ allProducts, setAllProducts }: ProductsProps) => {
+const AddProduct = ({ allProducts, dispatchProducts }: AddProductProps) => {
   const [displayForm, setDisplayForm] = useState(false)
 
   const handleClick = (event: React.SyntheticEvent) => {
@@ -19,7 +14,7 @@ const AddProduct = ({ allProducts, setAllProducts }: ProductsProps) => {
   {
     if (displayForm) {
       return (
-        <AddProductForm handleClick={ handleClick } allProducts={allProducts} setAllProducts={setAllProducts} />
+        <AddProductForm handleClick={ handleClick } dispatchProducts={dispatchProducts} />
       )
     } else {
       return (
