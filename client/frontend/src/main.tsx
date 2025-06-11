@@ -2,9 +2,15 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import '../../assets/index.css'
 import App from './App.tsx'
+import { ThemeProvider } from "./context/ThemeContext.tsx"
+import { CurrencyProvider } from "./context/CurrencyContext.tsx"
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ThemeProvider>
+      <CurrencyProvider>
+        <App />
+      </CurrencyProvider>
+    </ThemeProvider>
   </StrictMode>,
 )

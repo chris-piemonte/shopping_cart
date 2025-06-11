@@ -1,5 +1,6 @@
 @import url("./whitespace-reset.css");
 @import url("https://fonts.googleapis.com/css?family=Rammetto+One%7CRoboto+Condensed");
+@import "themes.css";
 
 body {
   font-family: "Roboto Condensed", sans-serif;
@@ -9,6 +10,8 @@ body {
 #app {
   width: 800px;
   margin: 20px auto 20px auto;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 main,

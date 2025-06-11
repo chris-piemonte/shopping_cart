@@ -1,0 +1,10 @@
+.light {
+  color: #6200ea;
+  background-color: lightblue;
+  /* text-color: black; */
+}
+
+.dark {
+  color: rgb(15, 88, 112);
+  background-color: #6200ea;
+}
