@@ -1,9 +1,45 @@
-export interface Product {
-  _id: string;
-  title: string;
-  quantity: number;
-  price: number;
-}
+import { z } from 'zod';
+
+export const ProductSchema = z.object({
+  _id: z.string().min(1),
+  title: z.string().min(1),
+  quantity: z.number().min(0),
+  price: z.number().min(0),
+});
+
+export const CartItemSchema = ProductSchema.extend({
+  productId: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  _v: z.number(),
+});
+
+export const NewProductPropsSchema = z.object({
+  title: z.string().min(1),
+  quantity: z.string().min(1),
+  price: z.string().min(1),
+});
+
+export const EditProductPropsSchema = z.object({
+  title: z.string(),
+  quantity: z.number(),
+  price: z.number(),
+});
+
+export const CartResponseSchema = z.object({
+  product: ProductSchema.extend({
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    _v: z.number(),
+  }),
+  item: CartItemSchema,
+});
+
+export type Product = z.infer<typeof ProductSchema>;
+export type CartItem = z.infer<typeof CartItemSchema>;
+export type NewProductProps = z.infer<typeof NewProductPropsSchema>;
+export type EditProductProps = z.infer<typeof EditProductPropsSchema>;
+export type CartResponse = z.infer<typeof CartResponseSchema>;
 
 interface SetInitialProducts {
   type: 'SET_INITIAL_PRODUCTS';
@@ -39,28 +75,10 @@ interface SortProducts {
 
 export type ProductsActions = SetInitialProducts | AddProduct | DeleteProduct | UpdateProduct | ReduceProductQuantity | SortProducts;
 
-export interface NewProductProps {
-  title: string;
-  quantity: string;
-  price: string;
-}
-export interface EditProductProps {
-  title: string;
-  quantity: number;
-  price: number;
-}
-
 export interface ProductsProps {
   allProducts: Product[];
   dispatchProducts: React.ActionDispatch<[action: ProductsActions]>;
   dispatchCart: React.ActionDispatch<[action: CartActions]>;
-}
-
-export interface CartItem extends Product {
-  productId: string;
-  createdAt: string;
-  updatedAt: string;
-  _v: number;
 }
 
 interface SetInitialCart {
@@ -93,19 +111,6 @@ export interface AddProductFormProps {
 export interface AddProductProps {
   allProducts: Product[];
   dispatchProducts: React.ActionDispatch<[action: ProductsActions]>;
-}
-
-export interface CartResponse {
-  product: {
-    _id: string;
-    title: string;
-    price: number;
-    quantity: number;
-    createdAt: string;
-    updatedAt: string;
-    _v: number;
-  },
-  item: CartItem;
 }
 
 export interface EditableProductProps {
